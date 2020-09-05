@@ -18,58 +18,68 @@
         <script type="text/javascript">
             const canvas = document.getElementById('mycanvas');
 
-            // const app = new PIXI.Application({
-            //     view: canvas,
-            //     width: window.innerWidth, 
-            //     height: window.innerHeight
-            // });
-
-            let _w = window.innerWidth;
-            let _h = window.innerHeight;
-
-            const renderer = new PIXI.Renderer({
-              view: canvas,
-              width: _w,
-              height: _h,
-              resolution: window.devicePixelRatio,
-              autoDensity: true,
+            const app = new PIXI.Application({
+                view: canvas,
+                width: window.innerWidth, 
+                height: window.innerHeight
             });
 
-            window.addEventListener('resize', resize);
+            console.log(PIXI.utils.TextureCache);
 
-            function resize() {
-              _w = window.innerWidth;
-              _h = window.innerHeight;
+            let loader = PIXI.Loader.shared;
+            loader.onComplete.add(handleLoadComplete);
+            loader.onLoad.add(handleLoadAsset); 
+            loader.onError.add(handleLoadError);
+            loader.onProgress.add(handleLoadProgress);
 
-              renderer.resize(_w, _h);
+            loader.add("guy", "sprite.png")
+                .add("bg", "sprite2.png")
+                .on("progress", handleLoadProgress)
+                .on("load", handleLoadAsset)
+                .on("load", handleLoadError)
+                .load();
+
+            let img;
+
+            function handleLoadProgress(loader, resource) {
+              console.log(loader.progress + "% loaded");
             }
 
-            const stage = new PIXI.Container();
+            function handleLoadAsset(loader, resource) {
+              console.log("Asset loaded" + resource.name);
+            }
 
-            const texture = PIXI.Texture.from('sprite.png');
-            const img = new PIXI.Sprite(texture);
+            function handleLoadError(loader, resource) {
+              console.log("load Error");
+            }
+
+            function handleLoadComplete() {
+              let texture = loader.resources.guy.texture;
+              img = new PIXI.Sprite(texture);
+              img.anchor.x = 0.5;
+              img.anchor.y = 0.5;
+              app.stage.addChild(img);
+
+              app.ticker.add(animate)
+
+              setTimeout(() => {
+                img.texture = loader.resources.bg.texture;
+              }, 2000);
+            }
+
+            // const texture = PIXI.Texture.from('sprite.png');
+            // const img = new PIXI.Sprite(texture);
             // img.x = app.renderer.width / 2;
             // img.y = app.renderer.height / 2;
-
-            img.x = renderer.width / 2;
-            img.y = renderer.height / 2;
-            img.anchor.x = 0.5;
-            img.anchor.y = 0.5;
-            stage.addChild(img);
+            // img.anchor.x = 0.5;
+            // img.anchor.y = 0.5;
             // app.stage.addChild(img);
-
-            const ticker = new PIXI.Ticker();
-            ticker.add(animate);
-            ticker.start();
-
             // app.ticker.add(animate);
 
             function animate() {
-
-              img.x = renderer.screen.width / 2;
-              img.y = renderer.screen.height / 2;
+              img.x = app.renderer.screen.width / 2;
+              img.y = app.renderer.screen.height / 2;
               img.rotation += 0.1;
-              renderer.render(stage);
             }
         </script>
     </body>
