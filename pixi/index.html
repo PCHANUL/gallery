@@ -1,43 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-<style>
-    body{
+  <head>
+    <style>
+      body {
         margin: 0;
-    }
+      }
 
-    canvas{
+      canvas {
         display: block;
         background: blue;
-    }
-</style>
-    </head>
-    <body>
-      <canvas></canvas>
-        <canvas id="mycanvas"></canvas>
-        <script src="pixi.js"></script>
-        <script type="text/javascript">
-            const canvas = document.getElementById('mycanvas');
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <canvas id="mycanvas"></canvas>
+    <script src="pixi.js"></script>
+    <script type="text/javascript">
+      const canvas = document.getElementById("mycanvas");
 
-            const app = new PIXI.Application({
-                view: canvas,
-                width: window.innerWidth, 
-                height: window.innerHeight
-            });
+      const app = new PIXI.Application({
+        view: canvas,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
 
-            const texture = PIXI.Texture.from('sprite.png');
-            const img = new PIXI.Sprite(texture);
-            img.x = app.renderer.width / 2;
-            img.y = app.renderer.height / 2;
-            img.anchor.x = 0.5;
-            img.anchor.y = 0.5;
-            app.stage.addChild(img);
+      const texture = PIXI.Texture.from("sprite2.png");
+      const texture2 = PIXI.Texture.from("sprite.png");
 
-            app.ticker.add(animate);
+      let sprite1, sprite2, sprite3;
 
-            function animate() {
-                img.rotation += 0.1;
-            }
-        </script>
-    </body>
+      const img = new PIXI.Sprite(texture);
+      img.x = app.renderer.width / 2;
+      img.y = app.renderer.height / 2;
+      img.anchor.x = 0.5;
+      img.anchor.y = 0.5;
+      app.stage.addChild(img);
+
+      let container = new PIXI.Container();
+      app.stage.addChild(container);
+
+      sprite1 = new PIXI.Sprite(texture2);
+      sprite1.y = 100;
+      container.addChild(sprite1);
+
+      sprite2 = new PIXI.Sprite(texture2);
+      sprite2.x = 100;
+      sprite2.y = 100;
+      container.addChild(sprite2);
+
+      sprite3 = new PIXI.Sprite(texture2);
+      sprite3.position.set(500, 300);
+      sprite3.anchor.set(0.5);
+      sprite3.pivot.set(300, 50);
+      container.addChild(sprite3);
+
+      app.ticker.add(animate);
+
+      let delta = 0;
+
+      function animate() {
+        delta += 0.1;
+
+        sprite1.y = 100 + Math.sin(delta) * 10;
+        sprite2.x = 100 + Math.sin(delta) * 10;
+        sprite3.scale = new PIXI.Point(0.5, 0.5);
+        sprite3.rotation += 0.1;
+        sprite1.alpha = Math.sin(delta);
+
+        container.x = Math.sin(delta) * 10;
+      }
+    </script>
+  </body>
 </html>
