@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 // import { Text } from './Text.js';
 
-import * as PIXI from 'pixi.js';
+import * as PIXI from "pixi.js";
 
 const app = new PIXI.Application({
   width: 256,
@@ -13,27 +13,25 @@ const app = new PIXI.Application({
   resolution: 1,
 });
 
-PIXI.loader
-  .add('sprite.png')
-  .load(setup);
+PIXI.loader.add("sprite.png").load(setup);
 
 function setup() {
   let sprite = new PIXI.Sprite(PIXI.loader.resources["sprite.png"].texture);
-  app.stage.addChild(sprite)
+  app.stage.addChild(sprite);
 }
 
-class App extends Component{
+class App extends Component {
   constructor() {
     super();
     this.state = {
       a: 10,
-    }
+    };
 
     document.body.appendChild(app.view);
 
     // // 배경색 변경
     // app.renderer.backgroundColor = 0xf1df1f;
-    
+
     // // 배경사이즈 변경
     // app.renderer.autoResize = true;
     // app.renderer.resize(500, 500);
@@ -52,12 +50,10 @@ class App extends Component{
     // app.stage.addChild(sprite)
   }
 
-
-
-  // 이미지를 
+  // 이미지를
 
   // // 이미지를 가져오는 방법2
-  // callImage2() { 
+  // callImage2() {
   //   app.loader
   //     .add("sprite.png")
   //     .load(setup)
@@ -72,18 +68,9 @@ class App extends Component{
   //   }
   // }
 
-
-
-
-
   render() {
-
-    return (
-      <div id="App"></div>
-    );
+    return <div id="App"></div>;
   }
 }
-
-
 
 export default App;
