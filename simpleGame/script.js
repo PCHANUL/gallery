@@ -6,6 +6,8 @@ const app = new PIXI.Application({
 });
 
 const tileSize = 16;
+const characterSize = 32;
+const SCALE = 2;
 
 let map = {
   width: 16,
@@ -27,7 +29,6 @@ let map = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -37,13 +38,41 @@ let map = {
   ],
 };
 
-// The application will create a canvas element for you that you
-// can then insert into the DOM
-document.body.appendChild(app.view);
+function testCollision(worldX, worldY) {
+  let mapX = Math.floor(worldX / tileSize / SCALE)
+  let mapY = Math.floor(worldY / tileSize / SCALE)
+  return map.collision[mapY * map.width + mapX];
+}
 
-// load the texture we need
-app.loader.add("tileset", "asset.png").load((loader, resources) => {
-  // This creates a texture from a 'bunny.png' image
+class Keyboard {
+  constructor () {
+    this.pressed = {};
+  }
+
+  watch (el) {
+    el.addEventListener('keydown', (e) => {
+      console.log(e.key)
+      this.pressed[e.key] = true;
+    })
+    el.addEventListener('keyup', (e) => {
+      this.pressed[e.key] = false;
+    })
+  } 
+}
+
+
+document.body.appendChild(app.view);
+app.view.setAttribute('tabindex', 0);
+
+
+app.loader.add("tileset", "asset.png")
+app.loader.add("character", "FinnSprite.png")
+// app.loader.add("character", "FinnInstruction.png")
+
+app.loader.load((loader, resources) => {
+
+  let kb = new Keyboard();
+  kb.watch(app.view);
 
   let tileTextures = [];
   for (let i = 0; i < 7 * 11; i++) {
@@ -55,12 +84,23 @@ app.loader.add("tileset", "asset.png").load((loader, resources) => {
       new PIXI.Rectangle(x * tileSize, y * tileSize, tileSize, tileSize)
     );
   }
-  let sky = 
-    new PIXI.TilingSprite(
-      tileTextures[74], 
-      map.width * tileSize, 
-      map.height * tileSize
+
+  let characterFrames = [];
+  for (let i = 0; i < 25; i++) {
+    characterFrames[i] = new PIXI.Texture(
+      resources.character.texture,
+      // new PIXI.Rectangle(tx, ty, tw, th)
+      new PIXI.Rectangle(i * characterSize, 0, characterSize, characterSize)
     );
+  }
+
+  const blob = new PIXI.Sprite(characterFrames[0]);
+  blob.scale.x = SCALE;
+  blob.scale.y = SCALE;
+
+  let sky = new PIXI.TilingSprite(tileTextures[74], 
+    map.width * tileSize, map.height * tileSize
+  );
   let background = new PIXI.Container();
   for (let y = 0; y < map.width; y++) {
     for (let x = 0; x < map.width; x++) {
@@ -72,17 +112,72 @@ app.loader.add("tileset", "asset.png").load((loader, resources) => {
     }
   }
 
-  sky.scale.x = sky.scale.y = 2;
-  background.scale.x = 2;
-  background.scale.y = 2;
+  sky.scale.x = sky.scale.y = SCALE;
+  background.scale.y = SCALE;
+  background.scale.x = SCALE;
 
   app.stage.addChild(sky);
   app.stage.addChild(background);
+  app.stage.addChild(blob);
 
-  // Listen for frame updates
+  let character = {
+    x: 0, y: 0,
+    vx: 0, vy: 0,
+  }
+
+  // Listen for frame updates 
   app.ticker.add(() => {
-    // each frame we spin the bunny around a bit
-    // background.rotation += 0.01;
+    blob.x = character.x;
+    blob.y = character.y;
+
+    character.vy = character.vy + 1;
+    character.x += character.vx;
+
+    let touchingGround = testCollision(
+      character.x,
+      character.y + tileSize * SCALE * 2 + 1
+    );
+
+
+    if (character.vy > 0) {
+      for (let i = 0; i < character.vy; i++) {
+        let testX1 = character.x;
+        let testX2 = character.x + tileSize * SCALE - 1;
+        let testY = character.y + tileSize * SCALE * 2 - 10;
+        if (testCollision(testX1, testY) || testCollision(testX2, testY)) {
+          character.vy = 0;
+          break;
+        }
+        character.y = character.y + 1;
+      }
+    }
+
+    if (character.vy < 0) {
+      character.y += character.vy;
+    }
+
+    if (kb.pressed.ArrowUp) {
+      character.vy = -10;
+    }
+    if (kb.pressed.ArrowRight) {
+      character.vx += 2;
+    }
+    if (kb.pressed.ArrowLeft) {
+      character.vx -= 2;
+    }
+
+    if (character.vx > 0) {
+      character.vx -= 1;
+    }
+    if (character.vx < 0) {
+      character.vx += 1;
+    }
+
+    if (!touchingGround) {
+      blob.texture = characterFrames[0];
+    } else {
+      blob.texture = characterFrames[0];
+    }
   });
 });
 
