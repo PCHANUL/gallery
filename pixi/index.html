@@ -17,19 +17,15 @@
     <canvas id="mycanvas"></canvas>
     <script src="pixi.js"></script>
     <script type="text/javascript">
-      const canvas = document.getElementById("mycanvas");
+      const canvas = document.getElementById('mycanvas');
 
       const app = new PIXI.Application({
-        view: canvas,
-        width: window.innerWidth,
-        height: window.innerHeight,
+          view: canvas,
+          width: window.innerWidth, 
+          height: window.innerHeight
       });
 
-      const texture = PIXI.Texture.from("sprite2.png");
-      const texture2 = PIXI.Texture.from("sprite.png");
-
-      let sprite1, sprite2, sprite3;
-
+      const texture = PIXI.Texture.from('sprite.png');
       const img = new PIXI.Sprite(texture);
       img.x = app.renderer.width / 2;
       img.y = app.renderer.height / 2;
@@ -37,79 +33,10 @@
       img.anchor.y = 0.5;
       app.stage.addChild(img);
 
-      let container = new PIXI.Container();
-      app.stage.addChild(container);
-
-      // sprite1 = new PIXI.Sprite(texture2);
-      // sprite1.position.set(
-      //   app.renderer.screen.width / 2,
-      //   app.renderer.screen.height / 2
-      // );
-      // sprite1.anchor.set(0.5);
-      // container.addChild(sprite1);
-
-      // sprite2 = new PIXI.Sprite(texture2);
-      // sprite2.x = 100;
-      // sprite2.y = 100;
-      // // 색바꾸기
-      // sprite2.tint = 0xffff00;
-      // container.addChild(sprite2);
-
-      // sprite3 = new PIXI.Sprite(texture2);
-      // sprite3.position.set(500, 300);
-      // sprite3.anchor.set(0.5);
-      // sprite3.pivot.set(300, 50);
-      // container.addChild(sprite3);
-
-      let sprites = [];
-
-      addSprites();
-
       app.ticker.add(animate);
 
-      function addSprites() {
-        for (let i = 0; i < 10; i++) {
-          let sprite = new PIXI.Sprite(texture2);
-          sprite.x = Math.random() * app.renderer.screen.width;
-          sprite.y = Math.random() * app.renderer.screen.height;
-          // 랜덤색지정
-          sprite.tint = Math.random() * 0xffffff;
-          sprite.anchor.set(0.5);
-
-          container.addChild(sprite);
-          sprites.push(sprite);
-        }
-      }
-
-      let delta = 0;
-
       function animate() {
-        delta += 0.1;
-
-        container.y = Math.sin(delta) * 10;
-
-        for (let i = 0; i < sprites.length; i++) {
-          sprites[i].rotation += 0.1;
-        }
-
-        // sprite2.x = 100 + Math.sin(delta) * 10;
-        // sprite3.scale = new PIXI.Point(0.5, 0.5);
-        // sprite3.rotation += 0.1;
-        // 숨기기
-        // sprite1.visible = false;
-
-        // 투명도
-        // sprite1.alpha = Math.sin(delta);
-
-        // Blend Mode
-        // sprite1.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-
-        // interactive
-        // sprite1.interactive = true;
-        // sprite1.buttonMode = true;
-
-        // container를 움직이기
-        // container.x = Math.sin(delta) * 10;
+          img.rotation += 0.1;
       }
     </script>
   </body>
