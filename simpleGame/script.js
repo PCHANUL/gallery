@@ -60,13 +60,14 @@ class Keyboard {
   } 
 }
 
+app.view.setAttribute('tabindex', 0);
 
 document.body.appendChild(app.view);
-app.view.setAttribute('tabindex', 0);
 
 
 app.loader.add("tileset", "asset.png")
 app.loader.add("character", "FinnSprite.png")
+app.loader.add("characterMirror", "FinnSpriteMirror.png")
 // app.loader.add("character", "FinnInstruction.png")
 
 app.loader.load((loader, resources) => {
@@ -89,6 +90,15 @@ app.loader.load((loader, resources) => {
   for (let i = 0; i < 25; i++) {
     characterFrames[i] = new PIXI.Texture(
       resources.character.texture,
+      // new PIXI.Rectangle(tx, ty, tw, th)
+      new PIXI.Rectangle(i * characterSize, 0, characterSize, characterSize)
+    );
+  }
+
+  let characterFramesMirror = [];
+  for (let i = 0; i < 25; i++) {
+    characterFramesMirror[i] = new PIXI.Texture(
+      resources.characterMirror.texture,
       // new PIXI.Rectangle(tx, ty, tw, th)
       new PIXI.Rectangle(i * characterSize, 0, characterSize, characterSize)
     );
@@ -123,21 +133,16 @@ app.loader.load((loader, resources) => {
   let character = {
     x: 0, y: 0,
     vx: 0, vy: 0,
+    dir: true,
   }
 
   // Listen for frame updates 
-  app.ticker.add(() => {
+  app.ticker.add((time) => {
     blob.x = character.x;
     blob.y = character.y;
 
     character.vy = character.vy + 1;
     character.x += character.vx;
-
-    let touchingGround = testCollision(
-      character.x,
-      character.y + tileSize * SCALE * 2 + 1
-    );
-
 
     if (character.vy > 0) {
       for (let i = 0; i < character.vy; i++) {
@@ -152,20 +157,20 @@ app.loader.load((loader, resources) => {
       }
     }
 
-    if (character.vy < 0) {
-      character.y += character.vy;
-    }
-
     if (kb.pressed.ArrowUp) {
       character.vy = -10;
     }
     if (kb.pressed.ArrowRight) {
-      character.vx += 2;
+      character.vx = Math.min(5, character.vx + 2);
     }
     if (kb.pressed.ArrowLeft) {
-      character.vx -= 2;
+      character.vx = Math.max(-5, character.vx - 2);
     }
 
+
+    if (character.vy < 0) {
+      character.y += character.vy;
+    }
     if (character.vx > 0) {
       character.vx -= 1;
     }
@@ -173,11 +178,25 @@ app.loader.load((loader, resources) => {
       character.vx += 1;
     }
 
+    let touchingGround = testCollision(
+      character.x,
+      character.y + tileSize * SCALE * 2 + 1
+    );
+
     if (!touchingGround) {
-      blob.texture = characterFrames[0];
+      blob.texture = character.dir ? characterFrames[0] : characterFramesMirror[24];
     } else {
-      blob.texture = characterFrames[0];
+      if (character.vx > 0) {
+        blob.texture = characterFrames[(Math.floor(Date.now() / 100) % 6) + 10];
+        character.dir = true;
+      } else if (character.vx < 0) {
+        blob.texture = characterFramesMirror[(Math.floor(Date.now() / 100) % 6) + 14];
+        character.dir = false;
+      } else {
+        blob.texture = character.dir ? characterFrames[0] : characterFramesMirror[24];
+      }
     }
+
   });
 });
 
