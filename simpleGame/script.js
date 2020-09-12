@@ -10,37 +10,37 @@ const characterSize = 32;
 const SCALE = 2;
 
 let map = {
-  width: 16,
+  width: 30,
   height: 10,
   tiles: [
-    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,23,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,30,12,12,3, 4, 4, 5, 12,12,12,12,12,12,
-    12,12,12,30,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,30,12,12,12,12,12,12,12,12,12,12,12,12,
-    12,12,12,37,12,12,12,12,12,12,12,12,12,12,12,12,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,23,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,30,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,30,12,12,3, 4, 4, 5, 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,30,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    12,12,12,37,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 12, 12, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 12, 12, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
   ],
   collision: [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
   ],
 };
 
 function testCollision(worldX, worldY) {
-  let mapX = Math.floor(worldX / tileSize / SCALE)
-  let mapY = Math.floor(worldY / tileSize / SCALE)
+  let mapX = Math.floor(worldX / tileSize / SCALE);
+  let mapY = Math.floor(worldY / tileSize / SCALE);
   return map.collision[mapY * map.width + mapX];
 }
 
@@ -108,9 +108,11 @@ app.loader.load((loader, resources) => {
   blob.scale.x = SCALE;
   blob.scale.y = SCALE;
 
+  // texture를 타일로 이어붙임
   let sky = new PIXI.TilingSprite(tileTextures[74], 
     map.width * tileSize, map.height * tileSize
   );
+  
   let background = new PIXI.Container();
   for (let y = 0; y < map.width; y++) {
     for (let x = 0; x < map.width; x++) {
@@ -134,15 +136,25 @@ app.loader.load((loader, resources) => {
     x: 0, y: 0,
     vx: 0, vy: 0,
     dir: true,
+    jumped: false,
   }
 
+  let scrollX = 0;
+  let scrollY = 0;
+
   // Listen for frame updates 
-  app.ticker.add((time) => {
+  app.ticker.add(() => {
+
     blob.x = character.x;
     blob.y = character.y;
 
     character.vy = character.vy + 1;
     character.x += character.vx;
+
+    let touchingGround = testCollision(
+      character.x,
+      character.y + tileSize * SCALE * 2 + 1
+    );
 
     if (character.vy > 0) {
       for (let i = 0; i < character.vy; i++) {
@@ -156,9 +168,27 @@ app.loader.load((loader, resources) => {
         character.y = character.y + 1;
       }
     }
+    
+    if (character.x + scrollX > app.view.width - tileSize * SCALE * 6){
+      scrollX = Math.max(
+        app.view.width - map.width * tileSize * SCALE,
+        app.view.width - character.x - tileSize * SCALE * 6
+      );
+    }
+    if (character.x + scrollX < tileSize * SCALE * 5){
+      scrollX = Math.min(0, -character.x + tileSize * SCALE * 5);
+    }
+    
+    app.stage.x = scrollX
 
-    if (kb.pressed.ArrowUp) {
-      character.vy = -10;
+
+
+    if (kb.pressed.ArrowUp && !character.jumped) {
+      character.vy = -15;
+      character.jumped = true;
+    }
+    if (kb.pressed.ArrowUp && touchingGround && character.jumped) {
+      character.jumped = false;
     }
     if (kb.pressed.ArrowRight) {
       character.vx = Math.min(5, character.vx + 2);
@@ -166,7 +196,6 @@ app.loader.load((loader, resources) => {
     if (kb.pressed.ArrowLeft) {
       character.vx = Math.max(-5, character.vx - 2);
     }
-
 
     if (character.vy < 0) {
       character.y += character.vy;
@@ -178,24 +207,30 @@ app.loader.load((loader, resources) => {
       character.vx += 1;
     }
 
-    let touchingGround = testCollision(
-      character.x,
-      character.y + tileSize * SCALE * 2 + 1
-    );
-
     if (!touchingGround) {
       blob.texture = character.dir ? characterFrames[0] : characterFramesMirror[24];
-    } else {
-      if (character.vx > 0) {
-        blob.texture = characterFrames[(Math.floor(Date.now() / 100) % 6) + 10];
-        character.dir = true;
-      } else if (character.vx < 0) {
-        blob.texture = characterFramesMirror[(Math.floor(Date.now() / 100) % 6) + 14];
-        character.dir = false;
-      } else {
-        blob.texture = character.dir ? characterFrames[0] : characterFramesMirror[24];
-      }
+    } 
+
+    if (character.x < 0 && kb.pressed.ArrowLeft) {
+      character.vx = 0;
     }
+    if (character.x > map.width * tileSize * SCALE - 50 && kb.pressed.ArrowRight) {
+      character.vx = 0;
+    }
+    
+    // character animate
+    if (character.vx > 0) {
+      blob.texture = characterFrames[(Math.floor(Date.now() / 100) % 6) + 10];
+      character.dir = true;
+    } else if (character.vx < 0) {
+      blob.texture = characterFramesMirror[(Math.floor(Date.now() / 100) % 6) + 14];
+      character.dir = false;
+    } else {
+      blob.texture = character.dir 
+        ? characterFrames[(Math.floor(Date.now() / 200) % 6) + 0] 
+        : characterFramesMirror[(Math.floor(Date.now() / 200) % 6) + 19];
+    }
+    
 
   });
 });
